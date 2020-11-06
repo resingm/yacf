@@ -1,0 +1,28 @@
+
+[a]
+string_0 = "test"
+
+int_0 = 0
+int_1 = 1
+int_2 = -1
+
+bool_0 = false
+bool_1 = true
+
+
+[b]
+int_arr = [0, 1, 2]
+bool_arr = [false, true]
+string_arr = ["", "filled"]
+
+[c]
+
+[c.emtpy]
+
+[c.c_a]
+parent = "c"
+section = "a"
+
+[c.c_b]
+[parent
+
