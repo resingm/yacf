@@ -24,5 +24,6 @@ parent = "c"
 section = "a"
 
 [c.c_b]
-[parent
+parent = "c"
+section = "b"
 
