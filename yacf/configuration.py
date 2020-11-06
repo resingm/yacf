@@ -57,15 +57,51 @@ class Configuration(object):
         self._seperator = seperator
         self._input = [arg for arg in args]
 
+    def _get(self, section: dict, key: str, default) -> Any:
+        """Private get, to recursively search the config.
+
+        :param section: Section to search through.
+        :param key: Requested key
+        :param default: Default value to return
+        :return Value of the requested key.
+        """
+        val = None
+
+        while val is None:
+            # If section contains key, return it
+            if key in section.keys():
+                val = section.get(key)
+                if isinstance(val, dict):
+                    val = Configuration(val).load()
+                break
+
+            # Last section to search through, if key not in here, skip
+            if not self._seperator in key:
+                break
+
+            k, remainder = key.split(self._seperator, 1)
+            if k not in section:
+                # key is invalid and does not exist
+                break
+
+            val = self._get(section.get(k), remainder, default)
+            break
+
+        return default if val is None else val
+
     def get(self, key: str, default=None) -> Any:
         """Tries to find the key in the dictionary and returns the value, if it exists.
         Function mimics the `dict.get()` function.
+        If the key describes a (sub)section, the return value is a newly parsed instance
+        of the `Configuration` class.
+
+
 
         :param key: The key to look for.
         :param default: The default value to return to.
-        :return: value of the requested key.
+        :return: Value of the requested key.
         """
-        # TODO: implement get
+        self._get(self._conf, key, default)
 
     def load(self, *args):
         """Loads the predefined input configuration files/dictionaries.
@@ -91,6 +127,7 @@ class Configuration(object):
             self._conf = deep_update(self._conf, other)
 
         self._conf = add_dot_notations(self._conf, self._seperator)
+        return self
 
 
 def _readf(file_path: str) -> dict:
