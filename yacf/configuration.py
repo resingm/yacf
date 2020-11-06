@@ -57,6 +57,12 @@ class Configuration(object):
         self._seperator = seperator
         self._input = [arg for arg in args]
 
+    def __dict__(self) -> dict:
+        """Convert the configuration object to a dictionary
+        :return: generated dict
+        """
+        return add_dot_notations(self._conf, self._seperator)
+
     def _get(self, section: dict, key: str, default) -> Any:
         """Private get, to recursively search the config.
 
@@ -109,7 +115,7 @@ class Configuration(object):
 
         :param *args: files or dictionaries to add to configuration
         """
-        self._input.join([arg for arg in args])
+        self._input += [arg for arg in args]
 
         for i in self._input:
             if isinstance(i, dict):
@@ -126,7 +132,7 @@ class Configuration(object):
 
             self._conf = deep_update(self._conf, other)
 
-        self._conf = add_dot_notations(self._conf, self._seperator)
+        # self._conf = add_dot_notations(self._conf, self._seperator)
         return self
 
 
