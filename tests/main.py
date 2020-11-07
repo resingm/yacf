@@ -5,6 +5,11 @@ Since the framework itself is quite simple, I skipped elaborate testes and just
 implemented one integration test.
 """
 
+# standard lib
+import traceback
+from typing import Union
+
+# first party
 from yacf import Configuration, utils
 
 _default = {
@@ -25,17 +30,17 @@ _default = {
         "empty": {},
         "c_a": {
             "parent": "c",
-            "child": "a",
+            "section": "a",
         },
         "c_b": {
             "parent": "c",
-            "child": "b",
+            "section": "b",
         },
     },
 }
 
 
-def assertSectionA(cfg: Configuration):
+def assert_section_a(cfg: Union[Configuration, dict]):
     # Regular access
     assert _default.get("a").get("string_0") == cfg.get("a").get("string_0")
     assert _default.get("a").get("int_0") == cfg.get("a").get("int_0")
@@ -53,40 +58,70 @@ def assertSectionA(cfg: Configuration):
     assert _default.get("a").get("bool_1") == cfg.get("a.bool_1")
 
 
-def assertSectionB(cfg: Configuration):
+def assert_section_b(cfg: Union[Configuration, dict]):
     # Regular access
-    assert _default.get("b").get("int_arr") == cfg._get("b").get("int_arr")
-    assert _default.get("b").get("bool_arr") == cfg._get("b").get("bool_arr")
-    assert _default.get("b").get("string_arr") == cfg._get("b").get("string_arr")
+    assert _default.get("b").get("int_arr") == cfg.get("b").get("int_arr")
+    assert _default.get("b").get("bool_arr") == cfg.get("b").get("bool_arr")
+    assert _default.get("b").get("string_arr") == cfg.get("b").get("string_arr")
 
     # dot access
-    assert _default.get("b").get("int_arr") == cfg._get("b.int_arr")
-    assert _default.get("b").get("bool_arr") == cfg._get("b.bool_arr")
-    assert _default.get("b").get("string_arr") == cfg._get("b.string_arr")
+    assert _default.get("b").get("int_arr") == cfg.get("b.int_arr")
+    assert _default.get("b").get("bool_arr") == cfg.get("b.bool_arr")
+    assert _default.get("b").get("string_arr") == cfg.get("b.string_arr")
 
 
-def assertSectionC(cfg: Configuration):
+def assert_section_c(cfg: Union[Configuration, dict]):
     # Regular access
     assert _default.get("c").get("empty") == cfg.get("c").get("empty")
     assert _default.get("c").get("c_a").get("parent") == cfg.get("c").get("c_a").get(
         "parent"
     )
-    assert _default.get("c").get("c_a").get("child") == cfg.get("c").get("c_a").get(
-        "child"
+    assert _default.get("c").get("c_a").get("section") == cfg.get("c").get("c_a").get(
+        "section"
     )
     assert _default.get("c").get("c_b").get("parent") == cfg.get("c").get("c_b").get(
         "parent"
     )
-    assert _default.get("c").get("c_b").get("child") == cfg.get("c").get("c_b").get(
-        "child"
+    assert _default.get("c").get("c_b").get("section") == cfg.get("c").get("c_b").get(
+        "section"
     )
 
     # dot access
     assert _default.get("c").get("empty") == cfg.get("c.empty")
     assert _default.get("c").get("c_a").get("parent") == cfg.get("c.c_a.parent")
-    assert _default.get("c").get("c_a").get("child") == cfg.get("c.c_a.child")
+    assert _default.get("c").get("c_a").get("section") == cfg.get("c.c_a.section")
     assert _default.get("c").get("c_b").get("parent") == cfg.get("c.c_b.parent")
-    assert _default.get("c").get("c_b").get("child") == cfg.get("c.c_b.child")
+    assert _default.get("c").get("c_b").get("section") == cfg.get("c.c_b.section")
+
+
+def assert_default(cfg: Configuration):
+    assert _default.get("", "default") == cfg.get("", default="default")
+
+
+def assert_dict(cfg: Configuration):
+    d = cfg.dict()
+    assert "a.string_0" in d.keys()
+    assert "a.int_0" in d.keys()
+    assert "a.int_1" in d.keys()
+    assert "a.int_2" in d.keys()
+    assert "a.bool_0" in d.keys()
+    assert "a.bool_1" in d.keys()
+
+    assert "b.int_arr" in d.keys()
+    assert "b.bool_arr" in d.keys()
+    assert "b.string_arr" in d.keys()
+
+    assert "c.empty" in d.keys()
+    assert "c.c_a" in d.keys()
+    assert "c.c_a.parent" in d.keys()
+    assert "c.c_a.section" in d.keys()
+    assert "c.c_b" in d.keys()
+    assert "c.c_b.parent" in d.keys()
+    assert "c.c_b.section" in d.keys()
+
+    assert_section_a(d)
+    assert_section_b(d)
+    assert_section_c(d)
 
 
 def main():
@@ -98,10 +133,17 @@ def main():
 
     # assert dict, JSON and TOML is parsed properly
     for c in [c_default, c_json, c_toml]:
-        assertSectionA(c_default)
-        assertSectionB(c_default)
-        assertSectionC(c_default)
+        assert_section_a(c)
+        assert_section_b(c)
+        assert_section_c(c)
+        assert_default(c)
+        assert_dict(c)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+        print("Test run successful.")
+    except Exception as e:
+        print(f"Failed tests: {str(e)}")
+        traceback.print_exc()
