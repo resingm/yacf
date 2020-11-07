@@ -17,7 +17,7 @@ ACCEPTED_FILE_EXTENSIONS = {
 }
 
 
-class Configuration(object):
+class Configuration:
     """A Configuration object is the most important part of this entire framework.
     When creating one, one can add arbitrarily many input arguments. Furthermore,
     one can add additional configuration origins in the load function as well.
@@ -53,11 +53,11 @@ class Configuration(object):
         :param *args: Defines the configuration input
         :param seperator: Seperator character to use for the dot-notation
         """
-        self._conf = {}
+        self._conf = dict()
         self._seperator = seperator
         self._input = [arg for arg in args]
 
-    def __dict__(self) -> dict:
+    def dict(self) -> dict:
         """Convert the configuration object to a dictionary
         :return: generated dict
         """
@@ -77,7 +77,8 @@ class Configuration(object):
             # If section contains key, return it
             if key in section.keys():
                 val = section.get(key)
-                if isinstance(val, dict):
+                if isinstance(val, dict) and val:
+                    # Non empty dict
                     val = Configuration(val).load()
                 break
 
@@ -95,7 +96,7 @@ class Configuration(object):
 
         return default if val is None else val
 
-    def get(self, key: str, default=None) -> Any:
+    def get(self, key: str, default: Any = None) -> Any:
         """Tries to find the key in the dictionary and returns the value, if it exists.
         Function mimics the `dict.get()` function.
         If the key describes a (sub)section, the return value is a newly parsed instance
@@ -107,7 +108,7 @@ class Configuration(object):
         :param default: The default value to return to.
         :return: Value of the requested key.
         """
-        self._get(self._conf, key, default)
+        return self._get(self._conf, key, default)
 
     def load(self, *args):
         """Loads the predefined input configuration files/dictionaries.
@@ -146,12 +147,12 @@ def _readf(file_path: str) -> dict:
         raise FileNotFoundError(f"File cannot be found: '{file_path}'")
 
     # Checks which function should be used to load the file
-    fn = [ext for ext in ACCEPTED_FILE_EXTENSIONS.keys() if file_path.endswith(ext)]
+    fn = [f for ext, f in ACCEPTED_FILE_EXTENSIONS.items() if file_path.endswith(ext)]
 
     if len(fn) < 1:
         raise NotImplementedError("File extension not supported.")
 
     with open(file_path, "r") as f:
-        content = ACCEPTED_FILE_EXTENSIONS.get(fn[0]).__call__(f)
+        content = fn[0].__call__(f)
         assert isinstance(content, dict)
         return content
