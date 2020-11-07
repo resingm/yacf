@@ -43,7 +43,7 @@ FILE_ENCODING = "utf-8"
 README_PATH = "README.md"
 LICENSE_PATH = "LICENSE"
 
-CLASSIFIERS = (
+CLASSIFIERS = [
     # 3- alpha, 4 - beta, 5 - production/stable
     "Development Status :: 5 - Stable",
     # Audience
@@ -52,7 +52,7 @@ CLASSIFIERS = (
     "License :: OSI Approved :: MIT License",
     # Supported versions
     "Programming Language :: Python :: 3.8",
-)
+]
 
 
 def _read(path: str) -> str:
@@ -117,10 +117,7 @@ def publish():
 #
 
 
-INSTALL_REQUIRES = [
-    "toml",
-]
-
+INSTALL_REQUIRES = ["toml"]
 PACKAGES = setuptools.find_packages()
 
 
@@ -150,7 +147,8 @@ def main(args):
         maintainer="Max Resing",
         maintainer_email="max.resing@protonmail.com",
         url="https://yacf.resing.dev",
-        python_requires=INSTALL_REQUIRES,
+        python_requires=">=3.8",
+        install_requires=INSTALL_REQUIRES,
         packages=PACKAGES,
         classifiers=CLASSIFIERS,
         project_urls={
