@@ -17,7 +17,7 @@ string_arr = ["", "filled"]
 
 [c]
 
-[c.emtpy]
+[c.empty]
 
 [c.c_a]
 parent = "c"
