@@ -105,8 +105,6 @@ def publish():
     if os.path.isdir("./dist"):
         os.system("rm -R ./dist")
     os.system("python setup.py sdist bdist_wheel")
-
-    return
     os.system("twine upload /*")
 
 
