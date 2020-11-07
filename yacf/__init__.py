@@ -59,6 +59,17 @@ you can choose a custom one when initializing the configuration instance.
 * json
 * toml
 
+
+
+## Caveats
+
+The framework is solely implemented and tested on Linux. I can not guarantee
+for any expected behaviour on other platforms. 
+If you use the framework on another platform, please share your experiences
+with me.
+
+
+
 """
 
 
@@ -72,4 +83,4 @@ def version() -> str:
     """Returns the version as a formatted string
     :return: Version string
     """
-    return ".".join(__version__)
+    return ".".join([str(v) for v in __version__])
