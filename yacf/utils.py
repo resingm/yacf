@@ -1,12 +1,8 @@
-"""
-TODO: Add docstring
+"""Collection of utiility functions for the YACF package.
 """
 
+# standard lib
 from typing import Any, Union
-
-# third party
-
-# first party
 
 
 def _get_depth(d: Any, depth=1) -> int:

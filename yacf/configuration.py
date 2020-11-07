@@ -1,3 +1,7 @@
+"""Configuration related functions, includes the Configuration class.
+"""
+
+
 # standard lib
 from json import load as json_load
 from os import path

@@ -10,8 +10,6 @@ and update them.
 
 ## Usage
 
-[//] # "TODO: usage"
-
 The usage of this framework is straight-forward.
 
 Create a Configuration instance. When creating one, give the inputs to read
