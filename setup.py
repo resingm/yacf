@@ -45,7 +45,7 @@ LICENSE_PATH = "LICENSE"
 
 CLASSIFIERS = [
     # 3- alpha, 4 - beta, 5 - production/stable
-    "Development Status :: 5 - Stable",
+    "Development Status :: 5 - Production/Stable",
     # Audience
     "Intended Audience :: Developers",
     # License
@@ -105,7 +105,7 @@ def publish():
     if os.path.isdir("./dist"):
         os.system("rm -R ./dist")
     os.system("python setup.py sdist bdist_wheel")
-    os.system("twine upload /*")
+    os.system("twine upload dist/*")
 
 
 #
