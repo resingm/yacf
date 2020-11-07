@@ -1,6 +1,6 @@
 
 
-[//] # "docstring is used to autogenerate the README.md file."
+[comment] # "docstring is used to autogenerate the README.md file."
 
 # YACF - Yet Another Configuration Framework
 
