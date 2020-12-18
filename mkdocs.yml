@@ -1,0 +1,20 @@
+site_name: yacf documentation
+site_url: https://resing.dev/yacf/
+site_description: yacf - Yet Another Configuration Framework (written in Python)
+site_author: Max Resing
+
+base_url: https://resing.dev/yacf/
+
+repo_url: https://codeberg.org/rem/yacf/
+
+copyright: Copyright &copy; 2020 <a href="https://www.maxresing.de">Max Resing</a>
+
+provider_name: resing.dev
+provider_url: https://resing.dev
+
+nav:
+  - Home: index.md
+  - License: license.md
+
+theme:
+  name: boring
