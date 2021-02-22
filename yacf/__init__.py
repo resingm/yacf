@@ -77,7 +77,7 @@ with me.
 # first party
 from .configuration import Configuration
 
-__version__ = (1, 0, 0)
+__version__ = (1, 0, 1)
 
 
 def version() -> str:
