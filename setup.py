@@ -51,7 +51,7 @@ CLASSIFIERS = [
     # License
     "License :: OSI Approved :: MIT License",
     # Supported versions
-    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.7",
 ]
 
 
@@ -145,7 +145,7 @@ def main(args):
         maintainer="Max Resing",
         maintainer_email="max.resing@protonmail.com",
         url="https://yacf.resing.dev",
-        python_requires=">=3.8",
+        python_requires=">=3.7",
         install_requires=INSTALL_REQUIRES,
         packages=PACKAGES,
         classifiers=CLASSIFIERS,
