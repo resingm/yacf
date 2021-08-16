@@ -74,6 +74,11 @@ class Configuration:
         :return: Value of the attribute
         :rtype: Any
         """
+        if self._seperator != ".":
+            raise AttributeError(
+                "Attribute notation can not be used if seperator is not the default `.`"
+            )
+
         val = self._get(self._conf, key, None)
 
         if val is None:
