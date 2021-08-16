@@ -144,14 +144,14 @@ def main(args):
         author_email="max.resing@protonmail.com",
         maintainer="Max Resing",
         maintainer_email="max.resing@protonmail.com",
-        url="https://yacf.resing.dev",
+        url="https://github.com/resingm/yacf",
         python_requires=">=3.7",
         install_requires=INSTALL_REQUIRES,
         packages=PACKAGES,
         classifiers=CLASSIFIERS,
         project_urls={
-            "Source": "https://codeberg.org/rem/yacf",
-            "Tracker": "https://codeberg.org/rem/yacf/issues",
+            "Source": "https://github.com/resingm/yacf",
+            "Tracker": "https://github.com/resingm/yacf/issues",
         },
     )
 
