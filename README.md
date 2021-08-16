@@ -35,7 +35,9 @@ approach is to define the configuration inputs as follows:
 
 To access the values of the configuration, one can either use the regular
 access of dictionaries, e.g. a concatenation of gets(). Alternatively one can
-simply use dot notation:
+simply use dot notation. However, the most convenient way to access attributes
+of the configuration is the regular attribute access. The recursive nature of 
+the framework makes it work like a charm.:
 
 ```
 config = Configuration('api-config.json').load()
@@ -43,6 +45,9 @@ sample = config.get('api').get('hostname')
 
 # Alternative dot notation
 sample = config.get('api.hostname')
+
+# Attribute notation
+sample = config.api.hostname
 ```
 
 
@@ -65,17 +70,20 @@ you can choose a custom one when initializing the configuration instance.
 ## Caveats
 
 The framework is solely implemented and tested on Linux. I can not guarantee
-for any expected behaviour on other platforms. 
+for any expected behaviour on other platforms.
 If you use the framework on another platform, please share your experiences
 with me.
 
-
+In addition, the attribute notation (`config.api.hostname`) is just tested for
+the default seperator `.`. Since the `.` has a special meaning in Python, it is
+easiest to use. To keep the framework simple and still flexible, we decided to
+not add an internal representation to circumvent the seperator limitation.
 
 
 
 # License
 
-MIT License Copyright (c) <year> <copyright holders>
+MIT License Copyright (c) 2021 Max Resing
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
