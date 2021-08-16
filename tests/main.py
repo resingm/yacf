@@ -10,7 +10,7 @@ import traceback
 from typing import Union
 
 # first party
-from yacf import Configuration, utils
+from yacf import Configuration
 
 _default = {
     "a": {
@@ -57,6 +57,15 @@ def assert_section_a(cfg: Union[Configuration, dict]):
     assert _default.get("a").get("bool_0") == cfg.get("a.bool_0")
     assert _default.get("a").get("bool_1") == cfg.get("a.bool_1")
 
+    # attribute access
+    if isinstance(cfg, Configuration):
+        assert _default.get("a").get("string_0") == cfg.a.string_0
+        assert _default.get("a").get("int_0") == cfg.a.int_0
+        assert _default.get("a").get("int_1") == cfg.a.int_1
+        assert _default.get("a").get("int_2") == cfg.a.int_2
+        assert _default.get("a").get("bool_0") == cfg.a.bool_0
+        assert _default.get("a").get("bool_1") == cfg.a.bool_1
+
 
 def assert_section_b(cfg: Union[Configuration, dict]):
     # Regular access
@@ -68,6 +77,12 @@ def assert_section_b(cfg: Union[Configuration, dict]):
     assert _default.get("b").get("int_arr") == cfg.get("b.int_arr")
     assert _default.get("b").get("bool_arr") == cfg.get("b.bool_arr")
     assert _default.get("b").get("string_arr") == cfg.get("b.string_arr")
+
+    # attribute access
+    if isinstance(cfg, Configuration):
+        assert _default.get("b").get("int_arr") == cfg.b.int_arr
+        assert _default.get("b").get("bool_arr") == cfg.b.bool_arr
+        assert _default.get("b").get("string_arr") == cfg.b.string_arr
 
 
 def assert_section_c(cfg: Union[Configuration, dict]):
@@ -92,6 +107,14 @@ def assert_section_c(cfg: Union[Configuration, dict]):
     assert _default.get("c").get("c_a").get("section") == cfg.get("c.c_a.section")
     assert _default.get("c").get("c_b").get("parent") == cfg.get("c.c_b.parent")
     assert _default.get("c").get("c_b").get("section") == cfg.get("c.c_b.section")
+
+    # attribute access
+    if isinstance(cfg, Configuration):
+        assert _default.get("c").get("empty") == cfg.c.empty
+        assert _default.get("c").get("c_a").get("parent") == cfg.c.c_a.parent
+        assert _default.get("c").get("c_a").get("section") == cfg.c.c_a.section
+        assert _default.get("c").get("c_b").get("parent") == cfg.c.c_b.parent
+        assert _default.get("c").get("c_b").get("section") == cfg.c.c_b.section
 
 
 def assert_default(cfg: Configuration):

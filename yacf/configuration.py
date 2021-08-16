@@ -22,26 +22,28 @@ ACCEPTED_FILE_EXTENSIONS = {
 
 
 class Configuration:
-    """A Configuration object is the most important part of this entire framework.
-    When creating one, one can add arbitrarily many input arguments. Furthermore,
-    one can add additional configuration origins in the load function as well.
+    """A Configuration object is the most important part of this entire
+    framework. When creating one, one can add arbitrarily many input arguments.
+    Furthermore, one can add additional configuration origins in the load
+    function as well.
 
     The configuration instance will try to read from all the different inputs.
-    It is important to know, that the order matters. The first arguments are the
-    ones which have the least priority. As more inputs are added, as finer the
-    configuration gets.
+    It is important to know, that the order matters. The first arguments are
+    the ones which have the least priority. As more inputs are added, as finer
+    the configuration gets.
 
     It is recommended to first add all inputs to build one complete default set
     of configuration parameters. As soon as those are available, the customly
-    configurable sources should be loaded, followed by possibly parsed environment
-    variables and lastly, the dictionary of command line arguments should be
-    added.
+    configurable sources should be loaded, followed by possibly parsed
+    environment variables and lastly, the dictionary of command line arguments
+    should be added.
 
     This will end up in a complete stack of different configurations.
 
-    To access configuration parameters, just call the `.get()` method. It mimics
-    the dictionary `.get()` method, with an additional feature. You can also
-    access configuration parameters by simply concatenating the keys in dot-notation.
+    To access configuration parameters, just call the `.get()` method. It
+    mimics the dictionary `.get()` method, with an additional feature. You can
+    also access configuration parameters by simply concatenating the keys in
+    dot-notation.
     """
 
     def __init__(self, *args, seperator="."):
@@ -61,13 +63,31 @@ class Configuration:
         self._seperator = seperator
         self._input = [arg for arg in args]
 
+    def __getattr__(self, key: str) -> Any:
+        """Gets an attribute of the class. Internally, it calls get() and
+        raises an Attribute error, if the attribute does not exist. The
+        function is little more than syntactic sugar.
+
+        :param key: Name of the attribute to look up
+        :type key: str
+        :raises AttributeError: Raised if attribute does not exist.
+        :return: Value of the attribute
+        :rtype: Any
+        """
+        val = self._get(self._conf, key, None)
+
+        if val is None:
+            raise AttributeError()
+
+        return val
+
     def dict(self) -> dict:
         """Convert the configuration object to a dictionary
         :return: generated dict
         """
         return add_dot_notations(self._conf, self._seperator)
 
-    def _get(self, section: dict, key: str, default) -> Any:
+    def _get(self, section: dict, key: str, default: Any) -> Any:
         """Private get, to recursively search the config.
 
         :param section: Section to search through.
@@ -87,7 +107,7 @@ class Configuration:
                 break
 
             # Last section to search through, if key not in here, skip
-            if not self._seperator in key:
+            if self._seperator not in key:
                 break
 
             k, remainder = key.split(self._seperator, 1)
@@ -101,12 +121,10 @@ class Configuration:
         return default if val is None else val
 
     def get(self, key: str, default: Any = None) -> Any:
-        """Tries to find the key in the dictionary and returns the value, if it exists.
-        Function mimics the `dict.get()` function.
-        If the key describes a (sub)section, the return value is a newly parsed instance
-        of the `Configuration` class.
-
-
+        """Tries to find the key in the dictionary and returns the value, if it
+        exists. Function mimics the `dict.get()` function. If the key describes
+        a (sub)section, the return value is a newly parsed instance of the
+        `Configuration` class.
 
         :param key: The key to look for.
         :param default: The default value to return to.
