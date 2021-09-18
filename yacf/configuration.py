@@ -125,6 +125,27 @@ class Configuration:
 
         return default if val is None else val
 
+    def _set(self, section: dict, key: str, val: Any):
+        """Privte set, to recursively search for the key and update the value.
+
+        :param section: Section to search through
+        :param key: Parameter to be updated
+        :param val: New value
+        """
+        if isinstance(val, dict) and val:
+            # Non empty dict
+            val = Configuration(val).load()
+
+        # Last section ? Then set key:
+        if self._seperator not in key:
+            section[key] = val
+        else:
+            k, remainder = key.split(self._seperator, 1)
+            if k not in section:
+                section[k] = Configuration({}).load()
+
+            self._set(section.get(k), remainder, val)
+
     def get(self, key: str, default: Any = None) -> Any:
         """Tries to find the key in the dictionary and returns the value, if it
         exists. Function mimics the `dict.get()` function. If the key describes
@@ -136,6 +157,10 @@ class Configuration:
         :return: Value of the requested key.
         """
         return self._get(self._conf, key, default)
+
+    def set(self, key: str, val: Any):
+        """Sets a value of a configuration option.
+        """
 
     def load(self, *args):
         """Loads the predefined input configuration files/dictionaries.
