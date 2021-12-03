@@ -145,7 +145,7 @@ def main(args):
         maintainer="Max Resing",
         maintainer_email="max.resing@protonmail.com",
         url="https://github.com/resingm/yacf",
-        python_requires=">=3.7",
+        python_requires=">=3.6",
         install_requires=INSTALL_REQUIRES,
         packages=PACKAGES,
         classifiers=CLASSIFIERS,

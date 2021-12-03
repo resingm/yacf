@@ -85,7 +85,7 @@ not add an internal representation to circumvent the seperator limitation.
 # first party
 from .configuration import Configuration
 
-__version__ = (1, 1, 0)
+__version__ = (1, 1, 1)
 
 
 def version() -> str:
